@@ -82,6 +82,9 @@ $(document).ready(function() {
 	});
 	    
   function render(eventList, fieldName) {
+	  var maxTrackDate = Math.max.apply(null,
+	            $.map(eventList, function(d) { return d.trackDate; }) );  
+	  
     var tileRows = buildRows(eventList, fieldName);
     
     var maxLabelWidth = Math.max.apply(null,
@@ -92,9 +95,9 @@ $(document).ready(function() {
     var maxScore = Math.max.apply(null,
       $.map(tileCells, function(d) { return d.score; }) );        
      
-    var margin = { top: 20, right: 0, bottom: 100, left: 10+maxLabelWidth },
+    var margin = { top: 20, right: 0, bottom: 20, left: 10 + maxLabelWidth },
       width = 1100 - margin.left - margin.right,
-      height = 430 - margin.top - margin.bottom;    
+      height = (tileRows.length+1) * gridSize;    
     
     var colorScale = d3.scale.quantile()
       .domain([0, buckets - 1, maxScore])
@@ -108,15 +111,25 @@ $(document).ready(function() {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var labels = svg.selectAll(".axis-Label")
+    var rowLabels = svg.selectAll(".axis-Label")
       .data(tileRows)
       .enter().append("text")
-        .text(function (d) { return d.label; })
+        .text(function(d) { return d.label; })
         .attr("x", 0)
-        .attr("y", function (d, i) { return i * gridSize; })
+        .attr("y", function(d, i) { return i * gridSize; })
         .style("text-anchor", "end")
         .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
         .attr("class", "axisLabel mono axis");
+
+    var colLabels = svg.selectAll(".axis-TrackDate")
+      .data(Array.apply(null, Array(maxTrackDate+1)).map(function (_, i) {return i;}))
+      .enter().append("text")
+        .text(function(d, i) { return "" + (i+1) })
+        .attr("x", function(d, i) { return i * gridSize; })
+        .attr("y", 0)
+        .style("text-anchor", "middle")
+        .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+        .attr("class", "timeLabel mono axis");
 
     var heatMap = svg.selectAll("div")
       .data(tileCells, function(d) { return d.col + ':' + d.row; })
@@ -129,8 +142,26 @@ $(document).ready(function() {
         .style("fill", function(d) { return colors[0]; });
     
     heatMap.transition().duration(1000)
-      .style("fill", function(d) { return colorScale(d.score); });   
-  }
+      .style("fill", function(d) { return colorScale(d.score); }); 
+    
+    var legend = svg.selectAll(".legend")
+		  .data([0].concat(colorScale.quantiles()), function(d) { return d; })
+		    .enter().append("g")
+		    .attr("class", "legend");
+		
+		legend.append("rect")
+		  .attr("x", function(d, i) { return legendElementWidth * i; })
+		  .attr("y", height)
+		  .attr("width", legendElementWidth)
+		  .attr("height", gridSize / 2)
+		  .style("fill", function(d, i) { return colors[i]; });
+		
+		legend.append("text")
+		  .attr("class", "mono")
+		  .text(function(d) { return "≥ " + Math.round(d); })
+		  .attr("x", function(d, i) { return legendElementWidth * i; })
+		  .attr("y", height - 5);
+		  }
   
   $.fn.textWidth = function(text, font) {
 	    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);

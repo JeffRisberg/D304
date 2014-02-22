@@ -80,7 +80,10 @@ $(document).ready(function() {
 		  render(eventList, fieldName);               
 		}
 	});
-	    
+	   
+  /**
+   * Remove any prior heatmap, and render a new one plus a legend.
+   */
   function render(eventList, fieldName) {
 	  var maxTrackDate = Math.max.apply(null,
 	            $.map(eventList, function(d) { return d.trackDate; }) );  
@@ -161,8 +164,11 @@ $(document).ready(function() {
 		  .text(function(d) { return "≥ " + Math.round(d); })
 		  .attr("x", function(d, i) { return legendElementWidth * i; })
 		  .attr("y", height - 5);
-		  }
+	}
   
+  /**
+   * Determine the text width of a string, based on a font spec such as "13px Arial"
+   */
   $.fn.textWidth = function(text, font) {
 	    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
 	    $.fn.textWidth.fakeEl.text(text || this.val() || this.text()).css('font', font || this.css('font'));

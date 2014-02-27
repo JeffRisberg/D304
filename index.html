@@ -63,7 +63,8 @@ $(document).ready(function() {
       gridSize = 33,
       legendElementWidth = gridSize*2,
       buckets = 9,
-      colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+      //colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+      colors = ["#3288BD","#66C2A5","#E6F598","#f6faaa","#FEE08B","#FDAE61","#F46D43","#D53E4F","#9E0142"];
   
   d3.json("caevents.json", function(error, data) {    
     eventList = data;
@@ -98,6 +99,8 @@ $(document).ready(function() {
     var maxScore = Math.max.apply(null,
       $.map(tileCells, function(d) { return d.score; }) );        
      
+    console.log(maxScore);
+    
     var margin = { top: 20, right: 0, bottom: 20, left: 10 + maxLabelWidth },
       width = 1100 - margin.left - margin.right,
       height = (tileRows.length+1) * gridSize;    
@@ -137,15 +140,17 @@ $(document).ready(function() {
     var heatMap = svg.selectAll("div")
       .data(tileCells, function(d) { return d.col + ':' + d.row; })
       .enter().append("svg:rect")
-        .attr("x", function(d) { return d.col * gridSize; })
+        .attr("x", function(d) { return d.col * gridSize + gridSize/2; })
         .attr("y", function(d) { return d.row * gridSize; })         
         .attr("class", "bordered")
-        .attr("width", function(d) { return gridSize; })
+        .attr("width", function(d) { return 0; })
         .attr("height", function(d) { return gridSize; })
         .style("fill", function(d) { return colors[0]; });
     
     heatMap.transition().duration(1000)
-      .style("fill", function(d) { return colorScale(d.score); }); 
+      .style("fill", function(d) { return colorScale(d.score); })
+      .attr("width", function(d) { return gridSize; })
+      .attr("x", function(d) { return d.col * gridSize; })
     
     var legend = svg.selectAll(".legend")
 		  .data([0].concat(colorScale.quantiles()), function(d) { return d; })
@@ -207,7 +212,12 @@ $(document).ready(function() {
       var priorSum = row.cells[date]
       if (priorSum == null) priorSum = 0.0;
       
-      row.cells[date] = priorSum + node.score;       
+      if (fieldName == "player") {    	  
+        row.cells[date] = priorSum + (3*node.score);
+      }
+      if (fieldName != "player") {
+        row.cells[date] = priorSum + node.score;
+      }     
     });
 
     return rows;

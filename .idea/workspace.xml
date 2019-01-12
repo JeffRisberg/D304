@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e36524b0-1405-4fe3-bc19-fdb244d12247" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.editorconfig" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/.project" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change beforePath="$PROJECT_DIR$/js/d3.js" afterPath="$PROJECT_DIR$/js/d3.js" />
+      <change beforePath="$PROJECT_DIR$/D304.iml" afterPath="$PROJECT_DIR$/D304.iml" />
     </list>
     <ignored path="D304.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -482,12 +479,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1393881532322</updated>
-      <workItem from="1547269209633" duration="383000" />
+      <workItem from="1547269209633" duration="451000" />
     </task>
+    <task id="LOCAL-00001" summary="updated to d3 version 5.7.x">
+      <created>1547269644848</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1547269644848</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="383000" />
+    <option name="totallyTimeSpent" value="451000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="800" extended-state="0" />
@@ -536,8 +541,10 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="updated to latest version of d3 and jQuery" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated to latest version of d3 and jQuery" />
+    <MESSAGE value="updated to d3 version 5.7.x" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated to d3 version 5.7.x" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
